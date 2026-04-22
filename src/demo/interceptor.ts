@@ -43,9 +43,39 @@ export function installDemoInterceptor() {
       return json({ ok: true });
     }
 
+    // Resources
+    if (p === '/api/v1/resources/' || p === '/api/v1/resources') {
+      const resources = NODES.map((n: any) => ({
+        id: n.id,
+        name: n.label || n.name || n.id,
+        type: n.type || 'service',
+        provider: n.metadata?.provider || (n.type === 'service' ? 'Kubernetes' : 'AWS'),
+        region: 'us-east-1',
+        status: n.health || 'healthy',
+        tags: n.metadata?.tags || [],
+        properties: n.metadata || {},
+        discoveredAt: new Date().toISOString(),
+        relationshipCount: EDGES.filter((e: any) => e.source === n.id || e.target === n.id).length,
+      }));
+      return json({ data: resources, total: resources.length, cursor: null, has_more: false });
+    }
+
     // Services
-    if (p === '/api/v1/services/') {
-      return json(SERVICES);
+    if (p === '/api/v1/services/' || p === '/api/v1/services') {
+      const svcs = SERVICES.map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        type: 'deployment',
+        namespace: s.team,
+        provider: 'Kubernetes',
+        image: `${s.name}:v1.0.0`,
+        replicas: '3',
+        cluster_ip: '10.0.1.' + Math.floor(Math.random()*255),
+        port: '8080',
+        tags: s.tags || [],
+        ...s,
+      }));
+      return json({ data: svcs });
     }
     if (p.startsWith('/api/v1/services/') && p.endsWith('/dependencies')) {
       const name = decodeURIComponent(p.slice('/api/v1/services/'.length, -('/dependencies'.length)));
@@ -55,7 +85,7 @@ export function installDemoInterceptor() {
       const name = decodeURIComponent(p.slice('/api/v1/services/'.length));
       const s = getSvc(name);
       if (!s) return json({ error: 'Not found' }, 404);
-      return json(s);
+      return json({ data: [{ ...s, type: 'deployment', namespace: s.team, provider: 'Kubernetes', image: `${s.name}:v1.0.0`, replicas: '3' }] });
     }
 
     // Graph

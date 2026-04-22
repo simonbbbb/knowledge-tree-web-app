@@ -106,12 +106,12 @@ export const SCOPES=[
 ];
 
 export const RUNS=[
-  {id:"run-001",scope:"AWS Production",status:"completed",startedAt:h(1),completedAt:h(0.9),resourcesFound:812,relationsFound:1493,errors:[]},
-  {id:"run-002",scope:"Kubernetes knowledgetree-prod",status:"completed",startedAt:h(1),completedAt:h(0.85),resourcesFound:1247,relationsFound:2118,errors:[]},
-  {id:"run-003",scope:"GCP BigQuery",status:"completed",startedAt:h(8),completedAt:h(7.92),resourcesFound:93,relationsFound:104,errors:[]},
-  {id:"run-004",scope:"Kubernetes knowledgetree-prod",status:"completed",startedAt:h(25),completedAt:h(24.88),resourcesFound:1241,relationsFound:2103,errors:[]},
-  {id:"run-005",scope:"AWS Production",status:"failed",startedAt:h(25),completedAt:h(24.82),resourcesFound:0,relationsFound:0,errors:["AccessDenied: iam:ListRoles"]},
-  {id:"run-006",scope:"GitHub knowledgetree org",status:"completed",startedAt:d(5),completedAt:d(4.99),resourcesFound:48,relationsFound:12,errors:[]},
+  {id:"run-001",scope:"scope-aws",status:"completed",startedAt:h(1),completedAt:h(0.9),resourcesFound:812,relationsFound:1493,errors:[]},
+  {id:"run-002",scope:"scope-k8s",status:"completed",startedAt:h(1),completedAt:h(0.85),resourcesFound:1247,relationsFound:2118,errors:[]},
+  {id:"run-003",scope:"scope-gcp",status:"completed",startedAt:h(8),completedAt:h(7.92),resourcesFound:93,relationsFound:104,errors:[]},
+  {id:"run-004",scope:"scope-k8s",status:"completed",startedAt:h(25),completedAt:h(24.88),resourcesFound:1241,relationsFound:2103,errors:[]},
+  {id:"run-005",scope:"scope-aws",status:"failed",startedAt:h(25),completedAt:h(24.82),resourcesFound:0,relationsFound:0,errors:["AccessDenied: iam:ListRoles"]},
+  {id:"run-006",scope:"scope-github",status:"completed",startedAt:d(5),completedAt:d(4.99),resourcesFound:48,relationsFound:12,errors:[]},
 ];
 
 export const DOCS_LIST=[
