@@ -1,4 +1,4 @@
-import { Search, Bell, Sun, Moon, Bot, User } from 'lucide-react';
+import { Search, Sun, Moon, Bot, User } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,13 +7,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useUIStore } from '@/lib/store';
-import { Badge } from '@/components/ui/badge';
+import { NotificationsDropdown } from './Notifications';
 
 export function Header() {
-  const { theme, setTheme, toggleChatPanel, chatPanelOpen, searchQuery, setSearchQuery, notifications } =
+  const { theme, setTheme, toggleChatPanel, chatPanelOpen, searchQuery, setSearchQuery } =
     useUIStore();
-
-  const unreadCount = notifications.length;
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -27,10 +25,13 @@ export function Header() {
           <Input
             type="search"
             placeholder="Search resources, services, docs..."
-            className="pl-8"
+            className="pl-8 pr-16"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+            <span className="text-xs">Ctrl K</span>
+          </kbd>
         </div>
       </div>
 
@@ -62,22 +63,7 @@ export function Header() {
           <TooltipContent>AI Assistant</TooltipContent>
         </Tooltip>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-4 w-4" />
-              {unreadCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -right-1 -top-1 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
-                >
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </Badge>
-              )}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>{unreadCount} notifications</TooltipContent>
-        </Tooltip>
+        <NotificationsDropdown />
 
         <Tooltip>
           <TooltipTrigger asChild>

@@ -59,6 +59,61 @@ export function installDemoInterceptor() {
       }));
       return json({ data: resources, total: resources.length, cursor: null, has_more: false });
     }
+    const resourceMatch = p.match(/^\/api\/v1\/resources\/([^/]+)$/);
+    if (resourceMatch) {
+      const id = decodeURIComponent(resourceMatch[1]);
+      const node = NODES.find((n: any) => n.id === id) as any;
+      if (!node) return json({ error: 'Not found' }, 404);
+      return json({
+        id: node.id,
+        name: node.label || node.name || node.id,
+        type: node.type || 'service',
+        provider: (node.metadata as any)?.provider || (node.type === 'service' ? 'Kubernetes' : 'AWS'),
+        region: 'us-east-1',
+        status: node.health || 'healthy',
+        tags: (node.metadata as any)?.tags || [],
+        properties: node.metadata || {},
+        discoveredAt: new Date().toISOString(),
+        relationshipCount: EDGES.filter((e: any) => e.source === node.id || e.target === node.id).length,
+      });
+    }
+    const relMatch = p.match(/^\/api\/v1\/resources\/([^/]+)\/relationships/);
+    if (relMatch) {
+      const id = decodeURIComponent(relMatch[1]);
+      const dir = url.searchParams.get('direction') || 'outgoing';
+      const related = EDGES.filter((e: any) => {
+        if (dir === 'outgoing') return e.source === id;
+        if (dir === 'incoming') return e.target === id;
+        return e.source === id || e.target === id;
+      }).map((e: any) => {
+        const otherId = dir === 'outgoing' ? e.target : e.source;
+        const other = NODES.find((n: any) => n.id === otherId) as any;
+        return {
+          id: otherId,
+          name: other?.label || other?.name || otherId,
+          type: other?.type || 'service',
+          provider: (other?.metadata as any)?.provider || 'AWS',
+          relationType: e.label || 'depends_on',
+          region: 'us-east-1',
+        };
+      });
+      return json({ data: related });
+    }
+    const changesMatch = p.match(/^\/api\/v1\/resources\/([^/]+)\/changes/);
+    if (changesMatch) {
+      const id = decodeURIComponent(changesMatch[1]);
+      const node = NODES.find((n: any) => n.id === id) as any;
+      const name = node?.label || node?.name || id;
+      const recentChanges = CHANGES.slice(0, 5).map((c: any) => ({
+        id: c.id,
+        type: c.type,
+        resourceType: node?.type || 'service',
+        resourceName: name,
+        description: c.description || `${c.type} ${name}`,
+        timestamp: c.timestamp,
+      }));
+      return json({ data: recentChanges });
+    }
 
     // Services
     if (p === '/api/v1/services/' || p === '/api/v1/services') {
@@ -85,7 +140,19 @@ export function installDemoInterceptor() {
       const name = decodeURIComponent(p.slice('/api/v1/services/'.length));
       const s = getSvc(name);
       if (!s) return json({ error: 'Not found' }, 404);
-      return json({ data: [{ ...s, type: 'deployment', namespace: s.team, provider: 'Kubernetes', image: `${s.name}:v1.0.0`, replicas: '3' }] });
+      const deps = getDeps(name);
+      const doc = DOCS_LIST.find((d: any) => d.target === name);
+      const rb = RUNBOOKS.find((r: any) => r.service_name === name);
+      const svcChanges = CHANGES.filter((c: any) => c.description?.toLowerCase().includes(name.toLowerCase())).slice(0, 5);
+      const metrics = {
+        latency_p50: 8 + Math.floor(Math.random() * 20),
+        latency_p99: 45 + Math.floor(Math.random() * 80),
+        error_rate: (Math.random() * 0.5).toFixed(3),
+        throughput_rps: 500 + Math.floor(Math.random() * 4000),
+        cpu_percent: 15 + Math.floor(Math.random() * 40),
+        memory_percent: 30 + Math.floor(Math.random() * 50),
+      };
+      return json({ data: [{ ...s, type: 'deployment', namespace: s.team, provider: 'Kubernetes', image: `${s.name}:v1.0.0`, replicas: '3', dependencies: deps, doc_id: doc?.id, runbook_id: rb?.id, recent_changes: svcChanges, metrics }] });
     }
 
     // Graph
@@ -137,8 +204,19 @@ export function installDemoInterceptor() {
       if (method === 'POST') {
         const scopeId = body.scopeId;
         const scope = SCOPES.find((s) => s.id === scopeId);
-        const run = { id: 'run-' + Math.floor(Math.random() * 10000), scope: scope?.name ?? 'Unknown', status: 'running', startedAt: new Date().toISOString(), completedAt: '', resourcesFound: 0, relationsFound: 0, errors: [] };
+        const runId = 'run-' + Math.floor(Math.random() * 10000);
+        const run = { id: runId, scopeId: scope?.id ?? '', scope: scope?.name ?? 'Unknown', status: 'running', startedAt: new Date().toISOString(), completedAt: '', resourcesFound: 0, relationsFound: 0, errors: [] };
         RUNS.unshift(run as any);
+        // Simulate run completion after 5 seconds
+        setTimeout(() => {
+          const r = RUNS.find((x: any) => x.id === runId);
+          if (r) {
+            r.status = 'completed';
+            r.completedAt = new Date().toISOString();
+            r.resourcesFound = 12 + Math.floor(Math.random() * 40);
+            r.relationsFound = 8 + Math.floor(Math.random() * 30);
+          }
+        }, 5000);
         return json(run, 201);
       }
       return json(RUNS);
@@ -206,13 +284,46 @@ export function installDemoInterceptor() {
     // Admin
     if (p === '/api/v1/admin/config') {
       if (method === 'PUT') return json({ ...body, saved: true });
-      return json({ features: { autoDiscovery: true, aiAssistant: true, runbooks: true, confluenceSync: true } });
+      return json({ features: { autoDiscovery: true, aiAssistant: true, runbooks: true, confluenceSync: true }, llm: { provider: 'openai', model: 'gpt-4o', api_key_configured: true, base_url: '' }, enricher: { provider: 'openai', model: 'gpt-4o', api_key_configured: true, base_url: '' } });
     }
     if (p === '/api/v1/admin/audit') {
       return json([]);
     }
     if (p === '/api/v1/admin/stats') {
       return json({ services: SERVICES.length, nodes: NODES.length, edges: EDGES.length, changes: CHANGES.length });
+    }
+    if (p === '/api/v1/admin/users') {
+      if (method === 'POST') {
+        return json({ id: 'u-' + Math.floor(Math.random()*10000), ...body, active: true, created_at: new Date().toISOString() }, 201);
+      }
+      return json([
+        { id: 'u-demo-001', username: 'demo', email: 'demo@knowledgetree.example', display_name: 'Demo Admin', role: 'admin', active: true, created_at: '2026-04-01T00:00:00Z', last_login: new Date().toISOString() },
+        { id: 'u-002', username: 'sarah', email: 'sarah@knowledgetree.example', display_name: 'Sarah Chen', role: 'editor', active: true, created_at: '2026-04-05T00:00:00Z', last_login: new Date().toISOString() },
+        { id: 'u-003', username: 'mike', email: 'mike@knowledgetree.example', display_name: 'Mike Ross', role: 'viewer', active: true, created_at: '2026-04-08T00:00:00Z', last_login: new Date().toISOString() },
+      ]);
+    }
+    if (p.match(/^\/api\/v1\/admin\/users\/[^/]+$/)) {
+      if (method === 'DELETE') return json({ deleted: true }, 204);
+      return json({ id: 'u-demo-001', username: 'demo', role: 'admin', active: true });
+    }
+    if (p === '/api/v1/admin/credentials') {
+      if (method === 'POST') {
+        return json({ id: 'cred-' + Math.floor(Math.random()*10000), ...body, status: 'valid', created_at: new Date().toISOString() }, 201);
+      }
+      return json([
+        { id: 'cred-001', name: 'Production AWS', type: 'aws', scope: 'global', status: 'valid', created_at: '2026-04-01T00:00:00Z', last_used: new Date().toISOString(), description: 'Primary AWS account for production infrastructure', metadata: { key_hint: 'AKIA...7XJQ' } },
+        { id: 'cred-002', name: 'Staging AWS', type: 'aws', scope: 'staging', status: 'valid', created_at: '2026-04-02T00:00:00Z', last_used: new Date().toISOString(), description: 'Staging environment AWS credentials', metadata: { key_hint: 'AKIA...3ABC' } },
+        { id: 'cred-003', name: 'Kubernetes Cluster', type: 'kubernetes', scope: 'global', status: 'valid', created_at: '2026-04-03T00:00:00Z', last_used: new Date().toISOString(), description: 'Kubeconfig for EKS production cluster', metadata: {} },
+      ]);
+    }
+    const credDetailMatch = p.match(/^\/api\/v1\/admin\/credentials\/([^/]+)$/);
+    if (credDetailMatch) {
+      if (method === 'DELETE') return json({ deleted: true }, 204);
+      return json({ id: credDetailMatch[1], name: 'Demo Credential', type: 'aws', status: 'valid' });
+    }
+    const credTestMatch = p.match(/^\/api\/v1\/admin\/credentials\/([^/]+)\/test$/);
+    if (credTestMatch && method === 'POST') {
+      return json({ status: 'success', message: 'Credential test passed', id: credTestMatch[1] });
     }
 
     // Dashboard
@@ -250,6 +361,34 @@ export function installDemoInterceptor() {
     if (p.startsWith('/api/v1/confluence/pages/')) {
       const pageId = decodeURIComponent(p.slice('/api/v1/confluence/pages/'.length).split('?')[0]);
       return json({ id: pageId, title: 'Demo page', content: '# Demo content\n\nThis is a placeholder Confluence page.', url: 'https://example.atlassian.net/wiki/spaces/KT/pages/' + pageId });
+    }
+
+    // Reports
+    if (p === '/api/v1/reports' || p === '/api/v1/reports/') {
+      return json({
+        cost_allocation: [
+          { team: 'platform', services: 4, monthly_cost_usd: 12450 },
+          { team: 'checkout', services: 5, monthly_cost_usd: 28900 },
+          { team: 'catalog', services: 3, monthly_cost_usd: 18700 },
+          { team: 'growth', services: 2, monthly_cost_usd: 5600 },
+        ],
+        discovery_coverage: { total: NODES.length, documented: DOCS_LIST.length, coverage_percent: Math.round((DOCS_LIST.length / NODES.length) * 100) },
+        top_risks: [
+          { id: 'ch-1', service: 'payments-service', description: 'v1.9.0 rollback due to malformed JSON from upstream', severity: 'high' },
+          { id: 'ch-2', service: 'orders-postgres', description: 'CPU spike to 89% during checkout peak', severity: 'medium' },
+          { id: 'ch-3', service: 'web-gateway', description: 'WAF blocked 15% legitimate traffic during rule update', severity: 'medium' },
+          { id: 'ch-4', service: 'inventory-service', description: 'Flash sale caused 3-minute reservation backlog', severity: 'low' },
+          { id: 'ch-5', service: 'notifications-service', description: 'Twilio API latency degraded SMS delivery by 8s', severity: 'low' },
+        ],
+        sla_compliance: [
+          { service: 'web-gateway', sla: '99.95%', uptime: '99.98%', status: 'passing' },
+          { service: 'checkout-api', sla: '99.95%', uptime: '99.97%', status: 'passing' },
+          { service: 'payments-service', sla: '99.99%', uptime: '99.94%', status: 'failing' },
+          { service: 'identity-service', sla: '99.99%', uptime: '99.99%', status: 'passing' },
+          { service: 'catalog-api', sla: '99.95%', uptime: '99.96%', status: 'passing' },
+          { service: 'orders-service', sla: '99.95%', uptime: '99.95%', status: 'passing' },
+        ],
+      });
     }
 
     // Fallback: unknown endpoint

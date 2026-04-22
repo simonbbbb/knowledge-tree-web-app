@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { AIChatPanel } from './AIChatPanel';
+import { CommandPalette } from './CommandPalette';
 import { useUIStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +22,7 @@ export function AppLayout() {
       </div>
 
       {chatPanelOpen && <AIChatPanel />}
+      <CommandPalette />
     </div>
   );
 }
