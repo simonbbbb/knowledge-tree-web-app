@@ -6,10 +6,9 @@ import App from './App';
 import './styles/globals.css';
 import { installDemoInterceptor } from './demo/interceptor';
 
-if (import.meta.env.VITE_DEMO_MODE === 'true') {
-  installDemoInterceptor();
-  localStorage.setItem('kt_auth_token', 'demo-jwt-token');
-}
+// This repo is the demo build — always mock the backend.
+installDemoInterceptor();
+localStorage.setItem('kt_auth_token', 'demo-jwt-token');
 
 const queryClient = new QueryClient({
   defaultOptions: {

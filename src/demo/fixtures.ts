@@ -1,41 +1,41 @@
-export const DEMO_USER = { id:"u-demo-001",username:"demo",email:"demo@arcadia.example",display_name:"Demo Admin",role:"admin" };
+export const DEMO_USER = { id:"u-demo-001",username:"demo",email:"demo@knowledgetree.example",display_name:"Demo Admin",role:"admin" };
 export const DEMO_LOGIN = { token:"demo-jwt-token",expires_in:28800,user:DEMO_USER };
 const now = Date.now();
 const h = (n:number)=>new Date(now - n*36e5).toISOString();
 const d = (n:number)=>new Date(now - n*864e5).toISOString();
 
 export const SERVICES = [
-  {id:"svc-web",name:"web-gateway",team:"platform",environment:"prod",health:"healthy",description:"Public HTTPS ingress and request router.",language:"Go",repository:"github.com/arcadia/web-gateway",owner:"platform@arcadia.example",tags:["public","tier-0","pci"],up:0,down:4,lastDiscovered:h(1),coverage:96},
-  {id:"svc-checkout",name:"checkout-api",team:"checkout",environment:"prod",health:"healthy",description:"Cart checkout orchestration.",language:"TypeScript",repository:"github.com/arcadia/checkout-api",owner:"checkout@arcadia.example",tags:["tier-0","pci"],up:1,down:5,lastDiscovered:h(1),coverage:92},
-  {id:"svc-payments",name:"payments-service",team:"checkout",environment:"prod",health:"degraded",description:"Payment processing via Stripe.",language:"Go",repository:"github.com/arcadia/payments-service",owner:"checkout@arcadia.example",tags:["tier-0","pci","external"],up:2,down:3,lastDiscovered:h(1),coverage:88},
-  {id:"svc-inventory",name:"inventory-service",team:"catalog",environment:"prod",health:"healthy",description:"Stock levels and fulfilment events.",language:"Go",repository:"github.com/arcadia/inventory-service",owner:"catalog@arcadia.example",tags:["tier-1"],up:3,down:2,lastDiscovered:h(2),coverage:91},
-  {id:"svc-catalog",name:"catalog-api",team:"catalog",environment:"prod",health:"healthy",description:"Product catalogue and faceting.",language:"Python",repository:"github.com/arcadia/catalog-api",owner:"catalog@arcadia.example",tags:["tier-1","public"],up:1,down:2,lastDiscovered:h(2),coverage:94},
-  {id:"svc-identity",name:"identity-service",team:"platform",environment:"prod",health:"healthy",description:"OAuth 2 / OIDC identity provider.",language:"Go",repository:"github.com/arcadia/identity-service",owner:"platform@arcadia.example",tags:["tier-0","security"],up:1,down:1,lastDiscovered:h(3),coverage:98},
-  {id:"svc-orders",name:"orders-service",team:"checkout",environment:"prod",health:"healthy",description:"Order state machine.",language:"TypeScript",repository:"github.com/arcadia/orders-service",owner:"checkout@arcadia.example",tags:["tier-0"],up:2,down:1,lastDiscovered:h(3),coverage:89},
-  {id:"svc-notifications",name:"notifications-service",team:"growth",environment:"prod",health:"healthy",description:"Transactional email, SMS, push.",language:"Node.js",repository:"github.com/arcadia/notifications-service",owner:"growth@arcadia.example",tags:["tier-2"],up:3,down:1,lastDiscovered:h(4),coverage:82},
-  {id:"svc-search",name:"search-api",team:"catalog",environment:"prod",health:"healthy",description:"OpenSearch facade with re-ranking.",language:"Python",repository:"github.com/arcadia/search-api",owner:"catalog@arcadia.example",tags:["tier-2"],up:1,down:1,lastDiscovered:h(5),coverage:93},
-  {id:"svc-analytics",name:"analytics-ingest",team:"data",environment:"prod",health:"unhealthy",description:"Clickstream ingest to Kafka.",language:"Go",repository:"github.com/arcadia/analytics-ingest",owner:"data@arcadia.example",tags:["tier-3"],up:4,down:1,lastDiscovered:h(6),coverage:70},
-  {id:"svc-fraud",name:"fraud-detector",team:"risk",environment:"prod",health:"healthy",description:"Real-time fraud scoring.",language:"Python",repository:"github.com/arcadia/fraud-detector",owner:"risk@arcadia.example",tags:["tier-0","ml"],up:1,down:1,lastDiscovered:h(6),coverage:85},
-  {id:"svc-warehouse",name:"warehouse-sync",team:"ops",environment:"prod",health:"healthy",description:"Nightly sync to Snowflake.",language:"Python",repository:"github.com/arcadia/warehouse-sync",owner:"data@arcadia.example",tags:["batch"],up:5,down:0,lastDiscovered:h(9),coverage:78},
-  {id:"svc-recs",name:"recommendations",team:"catalog",environment:"prod",health:"healthy",description:"Personalized recommendations at 30ms P99.",language:"Python",repository:"github.com/arcadia/recommendations",owner:"catalog@arcadia.example",tags:["tier-2","ml"],up:2,down:1,lastDiscovered:h(10),coverage:80},
-  {id:"svc-shipping",name:"shipping-service",team:"checkout",environment:"prod",health:"healthy",description:"Rate shopping and carrier tracking.",language:"Go",repository:"github.com/arcadia/shipping-service",owner:"checkout@arcadia.example",tags:["tier-1","external"],up:1,down:0,lastDiscovered:h(12),coverage:87},
-  {id:"svc-auth-proxy",name:"auth-proxy",team:"platform",environment:"prod",health:"healthy",description:"JWT validation sidecar.",language:"Rust",repository:"github.com/arcadia/auth-proxy",owner:"platform@arcadia.example",tags:["tier-0","security","internal"],up:0,down:0,lastDiscovered:h(12),coverage:99},
+  {id:"svc-web",name:"web-gateway",team:"platform",environment:"prod",health:"healthy",description:"Public HTTPS ingress and request router.",language:"Go",repository:"github.com/knowledgetree/web-gateway",owner:"platform@knowledgetree.example",tags:["public","tier-0","pci"],up:0,down:4,lastDiscovered:h(1),coverage:96},
+  {id:"svc-checkout",name:"checkout-api",team:"checkout",environment:"prod",health:"healthy",description:"Cart checkout orchestration.",language:"TypeScript",repository:"github.com/knowledgetree/checkout-api",owner:"checkout@knowledgetree.example",tags:["tier-0","pci"],up:1,down:5,lastDiscovered:h(1),coverage:92},
+  {id:"svc-payments",name:"payments-service",team:"checkout",environment:"prod",health:"degraded",description:"Payment processing via Stripe.",language:"Go",repository:"github.com/knowledgetree/payments-service",owner:"checkout@knowledgetree.example",tags:["tier-0","pci","external"],up:2,down:3,lastDiscovered:h(1),coverage:88},
+  {id:"svc-inventory",name:"inventory-service",team:"catalog",environment:"prod",health:"healthy",description:"Stock levels and fulfilment events.",language:"Go",repository:"github.com/knowledgetree/inventory-service",owner:"catalog@knowledgetree.example",tags:["tier-1"],up:3,down:2,lastDiscovered:h(2),coverage:91},
+  {id:"svc-catalog",name:"catalog-api",team:"catalog",environment:"prod",health:"healthy",description:"Product catalogue and faceting.",language:"Python",repository:"github.com/knowledgetree/catalog-api",owner:"catalog@knowledgetree.example",tags:["tier-1","public"],up:1,down:2,lastDiscovered:h(2),coverage:94},
+  {id:"svc-identity",name:"identity-service",team:"platform",environment:"prod",health:"healthy",description:"OAuth 2 / OIDC identity provider.",language:"Go",repository:"github.com/knowledgetree/identity-service",owner:"platform@knowledgetree.example",tags:["tier-0","security"],up:1,down:1,lastDiscovered:h(3),coverage:98},
+  {id:"svc-orders",name:"orders-service",team:"checkout",environment:"prod",health:"healthy",description:"Order state machine.",language:"TypeScript",repository:"github.com/knowledgetree/orders-service",owner:"checkout@knowledgetree.example",tags:["tier-0"],up:2,down:1,lastDiscovered:h(3),coverage:89},
+  {id:"svc-notifications",name:"notifications-service",team:"growth",environment:"prod",health:"healthy",description:"Transactional email, SMS, push.",language:"Node.js",repository:"github.com/knowledgetree/notifications-service",owner:"growth@knowledgetree.example",tags:["tier-2"],up:3,down:1,lastDiscovered:h(4),coverage:82},
+  {id:"svc-search",name:"search-api",team:"catalog",environment:"prod",health:"healthy",description:"OpenSearch facade with re-ranking.",language:"Python",repository:"github.com/knowledgetree/search-api",owner:"catalog@knowledgetree.example",tags:["tier-2"],up:1,down:1,lastDiscovered:h(5),coverage:93},
+  {id:"svc-analytics",name:"analytics-ingest",team:"data",environment:"prod",health:"unhealthy",description:"Clickstream ingest to Kafka.",language:"Go",repository:"github.com/knowledgetree/analytics-ingest",owner:"data@knowledgetree.example",tags:["tier-3"],up:4,down:1,lastDiscovered:h(6),coverage:70},
+  {id:"svc-fraud",name:"fraud-detector",team:"risk",environment:"prod",health:"healthy",description:"Real-time fraud scoring.",language:"Python",repository:"github.com/knowledgetree/fraud-detector",owner:"risk@knowledgetree.example",tags:["tier-0","ml"],up:1,down:1,lastDiscovered:h(6),coverage:85},
+  {id:"svc-warehouse",name:"warehouse-sync",team:"ops",environment:"prod",health:"healthy",description:"Nightly sync to Snowflake.",language:"Python",repository:"github.com/knowledgetree/warehouse-sync",owner:"data@knowledgetree.example",tags:["batch"],up:5,down:0,lastDiscovered:h(9),coverage:78},
+  {id:"svc-recs",name:"recommendations",team:"catalog",environment:"prod",health:"healthy",description:"Personalized recommendations at 30ms P99.",language:"Python",repository:"github.com/knowledgetree/recommendations",owner:"catalog@knowledgetree.example",tags:["tier-2","ml"],up:2,down:1,lastDiscovered:h(10),coverage:80},
+  {id:"svc-shipping",name:"shipping-service",team:"checkout",environment:"prod",health:"healthy",description:"Rate shopping and carrier tracking.",language:"Go",repository:"github.com/knowledgetree/shipping-service",owner:"checkout@knowledgetree.example",tags:["tier-1","external"],up:1,down:0,lastDiscovered:h(12),coverage:87},
+  {id:"svc-auth-proxy",name:"auth-proxy",team:"platform",environment:"prod",health:"healthy",description:"JWT validation sidecar.",language:"Rust",repository:"github.com/knowledgetree/auth-proxy",owner:"platform@knowledgetree.example",tags:["tier-0","security","internal"],up:0,down:0,lastDiscovered:h(12),coverage:99},
 ];
 
 export function getSvc(n:string){return SERVICES.find(s=>s.name===n);}
 export function getDeps(n:string){const up:string[]=[],down:string[]=[];for(const e of EDGES){if(e.source===`svc-${n}`)down.push(e.target.replace("svc-",""));if(e.target===`svc-${n}`)up.push(e.source.replace("svc-",""));}return{upstream:up.map(x=>getSvc(x)).filter(Boolean) as any[],downstream:down.map(x=>getSvc(x)).filter(Boolean) as any[]};}
 
 export const NODES = [
-  ...SERVICES.map(s=>({id:s.id,label:s.name,type:"service",team:s.team,environment:s.environment,health:s.health,namespace:`arcadia-${s.team}`,metadata:{language:s.language,tags:s.tags}})),
-  {id:"db-orders",label:"orders-postgres",type:"database",team:"checkout",environment:"prod",health:"healthy",namespace:"arcadia-checkout",metadata:{engine:"postgres-15"}},
-  {id:"db-catalog",label:"catalog-postgres",type:"database",team:"catalog",environment:"prod",health:"healthy",namespace:"arcadia-catalog",metadata:{engine:"postgres-15"}},
-  {id:"db-identity",label:"identity-postgres",type:"database",team:"platform",environment:"prod",health:"healthy",namespace:"arcadia-platform",metadata:{engine:"postgres-15"}},
-  {id:"os-catalog",label:"catalog-opensearch",type:"database",team:"catalog",environment:"prod",health:"healthy",namespace:"arcadia-catalog",metadata:{engine:"opensearch-2.13"}},
-  {id:"redis-session",label:"session-redis",type:"cache",team:"platform",environment:"prod",health:"healthy",namespace:"arcadia-platform",metadata:{engine:"redis-7"}},
-  {id:"redis-cart",label:"cart-redis",type:"cache",team:"checkout",environment:"prod",health:"healthy",namespace:"arcadia-checkout",metadata:{engine:"redis-7"}},
-  {id:"kafka-events",label:"kafka-events",type:"queue",team:"data",environment:"prod",health:"degraded",namespace:"arcadia-data",metadata:{engine:"MSK",topics:42}},
-  {id:"s3-assets",label:"s3-product-assets",type:"storage",team:"catalog",environment:"prod",health:"healthy",namespace:"arcadia-catalog",metadata:{bucket:"arcadia-prod-assets"}},
-  {id:"s3-events",label:"s3-analytics-events",type:"storage",team:"data",environment:"prod",health:"healthy",namespace:"arcadia-data",metadata:{bucket:"arcadia-prod-events"}},
+  ...SERVICES.map(s=>({id:s.id,label:s.name,type:"service",team:s.team,environment:s.environment,health:s.health,namespace:`knowledgetree-${s.team}`,metadata:{language:s.language,tags:s.tags}})),
+  {id:"db-orders",label:"orders-postgres",type:"database",team:"checkout",environment:"prod",health:"healthy",namespace:"knowledgetree-checkout",metadata:{engine:"postgres-15"}},
+  {id:"db-catalog",label:"catalog-postgres",type:"database",team:"catalog",environment:"prod",health:"healthy",namespace:"knowledgetree-catalog",metadata:{engine:"postgres-15"}},
+  {id:"db-identity",label:"identity-postgres",type:"database",team:"platform",environment:"prod",health:"healthy",namespace:"knowledgetree-platform",metadata:{engine:"postgres-15"}},
+  {id:"os-catalog",label:"catalog-opensearch",type:"database",team:"catalog",environment:"prod",health:"healthy",namespace:"knowledgetree-catalog",metadata:{engine:"opensearch-2.13"}},
+  {id:"redis-session",label:"session-redis",type:"cache",team:"platform",environment:"prod",health:"healthy",namespace:"knowledgetree-platform",metadata:{engine:"redis-7"}},
+  {id:"redis-cart",label:"cart-redis",type:"cache",team:"checkout",environment:"prod",health:"healthy",namespace:"knowledgetree-checkout",metadata:{engine:"redis-7"}},
+  {id:"kafka-events",label:"kafka-events",type:"queue",team:"data",environment:"prod",health:"degraded",namespace:"knowledgetree-data",metadata:{engine:"MSK",topics:42}},
+  {id:"s3-assets",label:"s3-product-assets",type:"storage",team:"catalog",environment:"prod",health:"healthy",namespace:"knowledgetree-catalog",metadata:{bucket:"knowledgetree-prod-assets"}},
+  {id:"s3-events",label:"s3-analytics-events",type:"storage",team:"data",environment:"prod",health:"healthy",namespace:"knowledgetree-data",metadata:{bucket:"knowledgetree-prod-events"}},
   {id:"ext-stripe",label:"stripe",type:"external",team:"checkout",environment:"prod",health:"healthy",namespace:"external",metadata:{provider:"Stripe"}},
   {id:"ext-shippo",label:"shippo",type:"external",team:"checkout",environment:"prod",health:"healthy",namespace:"external",metadata:{provider:"Shippo"}},
   {id:"ext-sendgrid",label:"sendgrid",type:"external",team:"growth",environment:"prod",health:"healthy",namespace:"external",metadata:{provider:"SendGrid"}},
@@ -84,34 +84,34 @@ export const EDGES = [
 ];
 
 export const CHANGES = [
-  {id:"c1",type:"deployed",resourceType:"Deployment",resourceName:"payments-service",scope:"k8s-prod",description:"Deployed payments-service v4.12.0",impact:"medium",timestamp:h(0.5),author:"alex@arcadia.example"},
-  {id:"c2",type:"modified",resourceType:"Deployment",resourceName:"checkout-api",scope:"k8s-prod",description:"HPA max replicas 30→60",impact:"low",timestamp:h(2),author:"sam@arcadia.example"},
+  {id:"c1",type:"deployed",resourceType:"Deployment",resourceName:"payments-service",scope:"k8s-prod",description:"Deployed payments-service v4.12.0",impact:"medium",timestamp:h(0.5),author:"alex@knowledgetree.example"},
+  {id:"c2",type:"modified",resourceType:"Deployment",resourceName:"checkout-api",scope:"k8s-prod",description:"HPA max replicas 30→60",impact:"low",timestamp:h(2),author:"sam@knowledgetree.example"},
   {id:"c3",type:"created",resourceType:"RDS Instance",resourceName:"orders-postgres-replica-2",scope:"aws-prod-us-east-1",description:"New read replica",impact:"medium",timestamp:h(4),author:"terraform"},
-  {id:"c4",type:"modified",resourceType:"Service",resourceName:"search-api",scope:"k8s-prod",description:"Service type→LoadBalancer",impact:"high",timestamp:h(6),author:"riley@arcadia.example"},
-  {id:"c5",type:"deleted",resourceType:"Deployment",resourceName:"legacy-cart-service",scope:"k8s-prod",description:"Decommissioned",impact:"low",timestamp:h(12),author:"kris@arcadia.example"},
-  {id:"c6",type:"deployed",resourceType:"Deployment",resourceName:"inventory-service",scope:"k8s-prod",description:"Deployed v2.7.3",impact:"high",timestamp:d(1),author:"alex@arcadia.example"},
-  {id:"c7",type:"created",resourceType:"S3 Bucket",resourceName:"arcadia-prod-events-archive",scope:"aws-prod-us-east-1",description:"Archive bucket 90d retention",impact:"low",timestamp:d(1),author:"terraform"},
+  {id:"c4",type:"modified",resourceType:"Service",resourceName:"search-api",scope:"k8s-prod",description:"Service type→LoadBalancer",impact:"high",timestamp:h(6),author:"riley@knowledgetree.example"},
+  {id:"c5",type:"deleted",resourceType:"Deployment",resourceName:"legacy-cart-service",scope:"k8s-prod",description:"Decommissioned",impact:"low",timestamp:h(12),author:"kris@knowledgetree.example"},
+  {id:"c6",type:"deployed",resourceType:"Deployment",resourceName:"inventory-service",scope:"k8s-prod",description:"Deployed v2.7.3",impact:"high",timestamp:d(1),author:"alex@knowledgetree.example"},
+  {id:"c7",type:"created",resourceType:"S3 Bucket",resourceName:"knowledgetree-prod-events-archive",scope:"aws-prod-us-east-1",description:"Archive bucket 90d retention",impact:"low",timestamp:d(1),author:"terraform"},
   {id:"c8",type:"modified",resourceType:"IAM Role",resourceName:"warehouse-sync-role",scope:"aws-prod-us-east-1",description:"Added s3:GetObject",impact:"medium",timestamp:d(1),author:"terraform"},
-  {id:"c9",type:"deployed",resourceType:"Deployment",resourceName:"recommendations",scope:"k8s-prod",description:"Deployed v1.9.0",impact:"medium",timestamp:d(2),author:"morgan@arcadia.example"},
-  {id:"c10",type:"modified",resourceType:"ConfigMap",resourceName:"identity-service-config",scope:"k8s-prod",description:"Token TTL→4h",impact:"high",timestamp:d(2),author:"kris@arcadia.example"},
-  {id:"c11",type:"created",resourceType:"EKS Node Group",resourceName:"arcadia-prod-memory-optimized",scope:"aws-prod-us-east-1",description:"r6g.xlarge node group",impact:"low",timestamp:d(3),author:"terraform"},
+  {id:"c9",type:"deployed",resourceType:"Deployment",resourceName:"recommendations",scope:"k8s-prod",description:"Deployed v1.9.0",impact:"medium",timestamp:d(2),author:"morgan@knowledgetree.example"},
+  {id:"c10",type:"modified",resourceType:"ConfigMap",resourceName:"identity-service-config",scope:"k8s-prod",description:"Token TTL→4h",impact:"high",timestamp:d(2),author:"kris@knowledgetree.example"},
+  {id:"c11",type:"created",resourceType:"EKS Node Group",resourceName:"knowledgetree-prod-memory-optimized",scope:"aws-prod-us-east-1",description:"r6g.xlarge node group",impact:"low",timestamp:d(3),author:"terraform"},
   {id:"c12",type:"deleted",resourceType:"RDS Snapshot",resourceName:"orders-postgres-snapshot-2025-02",scope:"aws-prod-us-east-1",description:"Auto-pruned",impact:"low",timestamp:d(3),author:"lifecycle-policy"},
 ];
 
 export const SCOPES=[
   {id:"scope-aws",name:"AWS Production",type:"aws",config:{regions:["us-east-1","eu-west-1"],accountId:"1234****7890"},enabled:true,lastRun:h(1),resourceCount:812},
-  {id:"scope-k8s",name:"Kubernetes arcadia-prod",type:"kubernetes",config:{cluster:"arcadia-prod",kubeconfig:"k8s-prod"},enabled:true,lastRun:h(1),resourceCount:1247},
-  {id:"scope-gcp",name:"GCP BigQuery",type:"gcp",config:{project:"arcadia-analytics"},enabled:true,lastRun:h(8),resourceCount:93},
-  {id:"scope-github",name:"GitHub arcadia org",type:"github",config:{org:"arcadia"},enabled:false,lastRun:d(5),resourceCount:48},
+  {id:"scope-k8s",name:"Kubernetes knowledgetree-prod",type:"kubernetes",config:{cluster:"knowledgetree-prod",kubeconfig:"k8s-prod"},enabled:true,lastRun:h(1),resourceCount:1247},
+  {id:"scope-gcp",name:"GCP BigQuery",type:"gcp",config:{project:"knowledgetree-analytics"},enabled:true,lastRun:h(8),resourceCount:93},
+  {id:"scope-github",name:"GitHub knowledgetree org",type:"github",config:{org:"knowledgetree"},enabled:false,lastRun:d(5),resourceCount:48},
 ];
 
 export const RUNS=[
   {id:"run-001",scope:"AWS Production",status:"completed",startedAt:h(1),completedAt:h(0.9),resourcesFound:812,relationsFound:1493,errors:[]},
-  {id:"run-002",scope:"Kubernetes arcadia-prod",status:"completed",startedAt:h(1),completedAt:h(0.85),resourcesFound:1247,relationsFound:2118,errors:[]},
+  {id:"run-002",scope:"Kubernetes knowledgetree-prod",status:"completed",startedAt:h(1),completedAt:h(0.85),resourcesFound:1247,relationsFound:2118,errors:[]},
   {id:"run-003",scope:"GCP BigQuery",status:"completed",startedAt:h(8),completedAt:h(7.92),resourcesFound:93,relationsFound:104,errors:[]},
-  {id:"run-004",scope:"Kubernetes arcadia-prod",status:"completed",startedAt:h(25),completedAt:h(24.88),resourcesFound:1241,relationsFound:2103,errors:[]},
+  {id:"run-004",scope:"Kubernetes knowledgetree-prod",status:"completed",startedAt:h(25),completedAt:h(24.88),resourcesFound:1241,relationsFound:2103,errors:[]},
   {id:"run-005",scope:"AWS Production",status:"failed",startedAt:h(25),completedAt:h(24.82),resourcesFound:0,relationsFound:0,errors:["AccessDenied: iam:ListRoles"]},
-  {id:"run-006",scope:"GitHub arcadia org",status:"completed",startedAt:d(5),completedAt:d(4.99),resourcesFound:48,relationsFound:12,errors:[]},
+  {id:"run-006",scope:"GitHub knowledgetree org",status:"completed",startedAt:d(5),completedAt:d(4.99),resourcesFound:48,relationsFound:12,errors:[]},
 ];
 
 export const DOCS_LIST=[
@@ -141,5 +141,5 @@ export const PLUGINS=[
 ];
 
 export const CONFLUENCE=[
-  {id:"conn-1",name:"Arcadia Wiki",baseUrl:"https://arcadia.atlassian.net/wiki",space:"KT",status:"connected",lastSync:h(3)},
+  {id:"conn-1",name:"Knowledge Tree Wiki",baseUrl:"https://knowledgetree.atlassian.net/wiki",space:"KT",status:"connected",lastSync:h(3)},
 ];
